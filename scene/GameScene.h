@@ -53,15 +53,8 @@ class GameScene {
 	/// </summary>
 	//背景ハンドル
 	uint32_t textureHandle_ = 0;
-	Sprite* sprite_ = nullptr;
 	Model* model_ = nullptr;
 	//3D描画ハンドル(modelの描画には、この2つが必要)
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
-	//サウンドデータハンドル
-	uint32_t soundDataHandle_ = 0;
-	//音声再生ハンドル
-	uint32_t voiceHandle_ = 0;
-	//値を表示する変数
-	int32_t value_ = 0;
 };

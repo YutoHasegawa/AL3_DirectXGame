@@ -6,10 +6,7 @@ using namespace DirectX;
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {
-	delete sprite_;
-	delete model_;
-}
+GameScene::~GameScene() { delete model_; }
 
 void GameScene::Initialize() {
 	//ここにシーン初期化処理
@@ -20,43 +17,28 @@ void GameScene::Initialize() {
 	debugText_ = DebugText::GetInstance();
 	//描画初期化
 	textureHandle_ = TextureManager::Load("mario.jpg");
-	sprite_ = Sprite::Create(textureHandle_, {100, 50});
 	model_ = Model::Create();
-	//3D描画初期化
+	// x,y,z方向のスケーリング
+	worldTransform_.scale_ = {5.0f, 5.0f, 5.0f};
+	// x,y,z軸周りの回転角を設定
+	//またXM_PIは180度、XM/PI/4.0fは45度
+	//また、XMConvertToRadians(45.0f)でも45度となる
+	worldTransform_.rotation_ = {XM_PI / 4.0f, XM_PI / 4.0f, 0.0f};
+	//x,y,z軸周りの平行移動
+	worldTransform_.translation_ = {10.0f, 10.0f, 10.0f};
+	// 3D描画初期化
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
-	//音声初期化
-	soundDataHandle_ = audio_->LoadWave("se_sad03.wav");
-	audio_->PlayWave(soundDataHandle_);
-	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
 }
 
 void GameScene::Update() {
 	//ここにシーンの更新処理
-	XMFLOAT2 position = sprite_->GetPosition();
-	position.x += 2.0f;
-	position.y += 1.0f;
-	//移動した座標をスプライトに反映
-	sprite_->SetPosition(position);
-
-	//スペースキーを押した瞬間
-	if (input_->TriggerKey(DIK_SPACE)) {
-		//音声停止
-		audio_->StopWave(voiceHandle_);
-	}
-
-	//デバッグテキストの表示(文字、x,y,表示倍率)
-	/*debugText_->Print("Kaizokuou ni oreha naru.", 50, 50, 1.0f);
-	//書式指定
-	debugText_->SetPos(50, 70);
-	debugText_->Printf("year:%d", 2001);*/
-
-	//変数の値をインクリメント
-	value_++;
-	std::string strDebug = std::string("Value:") +
-	std::to_string(value_);
-	//デバッグテキストの表示
-	debugText_->Print(strDebug, 50, 90, 1.0f);
+	debugText_->SetPos(50,50);
+	debugText_->Printf("translation:(%f, %f, %f)", worldTransform_.translation_.z, worldTransform_.translation_.y, worldTransform_.translation_.z);
+	debugText_->SetPos(50,70);
+	debugText_->Printf("rotation:(%f, %f, %f)", worldTransform_.rotation_.x, worldTransform_.rotation_.y, worldTransform_.rotation_.z);
+	debugText_->SetPos(50,90);
+	debugText_->Printf("scale:(%f, %f, %f)", worldTransform_.scale_.x, worldTransform_.scale_.y, worldTransform_.scale_.z);
 }
 
 void GameScene::Draw() {
@@ -99,7 +81,6 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	sprite_->Draw();
 
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
