@@ -9,6 +9,7 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {}
 
 void GameScene::Initialize() {
+	//ここにシーン初期化処理
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
@@ -16,9 +17,12 @@ void GameScene::Initialize() {
 	debugText_ = DebugText::GetInstance();
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	//ここにシーンの更新処理
+}
 
 void GameScene::Draw() {
+	//ここに描画処理
 
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
