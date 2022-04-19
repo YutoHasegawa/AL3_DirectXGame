@@ -55,6 +55,8 @@ class GameScene {
 	uint32_t textureHandle_ = 0;
 	Model* model_ = nullptr;
 	//3D描画ハンドル(modelの描画には、この2つが必要)
-	WorldTransform worldTransform_;
+	WorldTransform worldTransform_[100];
 	ViewProjection viewProjection_;
+	//カメラ上方向の角度
+	float viewAngle = 0.0f;
 };
