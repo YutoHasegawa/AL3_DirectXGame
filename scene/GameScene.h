@@ -56,7 +56,7 @@ class GameScene {
 	Sprite* sprite_ = nullptr;
 	Model* model_ = nullptr;
 	//3D描画ハンドル(modelの描画には、この2つが必要)
-	WorldTransform worldTransform_[9][9];
+	WorldTransform worldTransform_[9][9][9];
 	ViewProjection viewProjection_;
 	//サウンドデータハンドル
 	uint32_t soundDataHandle_ = 0;

@@ -24,9 +24,12 @@ void GameScene::Initialize() {
 	// 3D描画初期化
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
-			worldTransform_[i][j].scale_ = {1.0f, 1.0f, 1.0f};
-			worldTransform_[i][j].translation_ = {-15.0f + (4.0f * j), 16.0f + (-4.0f * i), 0};
-			worldTransform_[i][j].Initialize();
+			for (int k = 0; k < 9; k++) {
+				worldTransform_[i][j][k].scale_ = {1.0f, 1.0f, 1.0f};
+				worldTransform_[i][j][k].translation_ = {
+0				  -12.0f + (3.0f * j), 14.0f + (-3.0f * i), 4.0f * k};
+				worldTransform_[i][j][k].Initialize();
+			}
 		}
 	}
 
@@ -66,8 +69,8 @@ void GameScene::Draw() {
 	/// </summary>
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
-			if ((i % 2) == 0 || (j % 2) == 0) {
-				model_->Draw(worldTransform_[i][j], viewProjection_, textureHandle_);
+			for (int k = 0; k < 9; k++) {
+				model_->Draw(worldTransform_[i][j][k], viewProjection_, textureHandle_);
 			}
 		}
 	}
