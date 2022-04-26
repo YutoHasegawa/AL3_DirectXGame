@@ -20,43 +20,25 @@ void GameScene::Initialize() {
 	debugText_ = DebugText::GetInstance();
 	//描画初期化
 	textureHandle_ = TextureManager::Load("mario.jpg");
-	sprite_ = Sprite::Create(textureHandle_, {100, 50});
 	model_ = Model::Create();
-	//3D描画初期化
-	worldTransform_.Initialize();
+	// 3D描画初期化
+	for (int i = 0; i < 10; i++) {
+		worldTransform_[i].scale_ = {5.0f, 5.0f, 5.0f};
+		worldTransform_[i].translation_ = {-36.0f + (10.0f * i), 20.0f, 0};
+		worldTransform_[i].Initialize();
+	}
+
+	for (int i = 10; i < 20; i++) {
+		worldTransform_[i].scale_ = {5.0f, 5.0f, 5.0f};
+		worldTransform_[i].translation_ = {-36.0f + (10.0f * (i - 10)), -20.0f, 0};
+		worldTransform_[i].Initialize();
+	}
+
 	viewProjection_.Initialize();
-	//音声初期化
-	soundDataHandle_ = audio_->LoadWave("se_sad03.wav");
-	audio_->PlayWave(soundDataHandle_);
-	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
 }
 
 void GameScene::Update() {
 	//ここにシーンの更新処理
-	XMFLOAT2 position = sprite_->GetPosition();
-	position.x += 2.0f;
-	position.y += 1.0f;
-	//移動した座標をスプライトに反映
-	sprite_->SetPosition(position);
-
-	//スペースキーを押した瞬間
-	if (input_->TriggerKey(DIK_SPACE)) {
-		//音声停止
-		audio_->StopWave(voiceHandle_);
-	}
-
-	//デバッグテキストの表示(文字、x,y,表示倍率)
-	/*debugText_->Print("Kaizokuou ni oreha naru.", 50, 50, 1.0f);
-	//書式指定
-	debugText_->SetPos(50, 70);
-	debugText_->Printf("year:%d", 2001);*/
-
-	//変数の値をインクリメント
-	value_++;
-	std::string strDebug = std::string("Value:") +
-	std::to_string(value_);
-	//デバッグテキストの表示
-	debugText_->Print(strDebug, 50, 90, 1.0f);
 }
 
 void GameScene::Draw() {
@@ -86,7 +68,9 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	for (int i = 0; i < 20; i++) {
+		model_->Draw(worldTransform_[i], viewProjection_, textureHandle_);
+	}
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -99,7 +83,6 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	sprite_->Draw();
 
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
