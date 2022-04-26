@@ -42,6 +42,18 @@ class GameScene {
 	/// </summary>
 	void Draw();
 
+	enum PartId {
+		Root,	//大元
+		Spine,	//脊髄
+		Chest,	//胸
+		Head,	//頭
+		ArmL,	//左腕
+		ArmR,	//右腕
+		Hip,	//尻
+		LegL,	//左足
+		LegR,	//右足
+	};
+
   private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -51,4 +63,15 @@ class GameScene {
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
+<<<<<<< Updated upstream
+=======
+	//背景ハンドル
+	uint32_t textureHandle_ = 0;
+	Model* model_ = nullptr;
+	//3D描画ハンドル(modelの描画には、この2つが必要)
+	WorldTransform worldTransform_[100];
+	ViewProjection viewProjection_;
+	//カメラ上方向の角度
+	float viewAngle = 0.0f;
+>>>>>>> Stashed changes
 };
