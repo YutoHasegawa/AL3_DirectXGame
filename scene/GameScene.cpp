@@ -22,22 +22,28 @@ void GameScene::Initialize() {
 	textureHandle_ = TextureManager::Load("mario.jpg");
 	model_ = Model::Create();
 	// 3D描画初期化
-	for (int i = 0; i < 9; i++) {
-		for (int j = 0; j < 9; j++) {
-			for (int k = 0; k < 9; k++) {
-				worldTransform_[i][j][k].scale_ = {1.0f, 1.0f, 1.0f};
-				worldTransform_[i][j][k].translation_ = {
-0				  -12.0f + (3.0f * j), 14.0f + (-3.0f * i), 4.0f * k};
-				worldTransform_[i][j][k].Initialize();
-			}
-		}
+	for (int i = 0; i < 10; i++) {
+		worldTransform_[i].scale_ = {1.0f, 1.0f, 1.0f};
+		worldTransform_[i].translation_ = {
+		  cosf(XMConvertToRadians(36.0f * i)) * 10, sinf(XMConvertToRadians(36.0f * i)) * 10, 0};
+		worldTransform_[i].Initialize();
 	}
-
+	4
 	viewProjection_.Initialize();
 }
 
 void GameScene::Update() {
 	//ここにシーンの更新処理
+	XMFLOAT3 move = {0, 0, 0};
+
+	const float kRotationSpeed = 1.5f;
+
+	angle += kRotationSpeed;
+
+	for (int i = 0; i < 10; i++) {
+		worldTransform_[i].translation_ =  {cosf(XMConvertToRadians((36.0f * i) + angle)) * 10, sinf(XMConvertToRadians((36.0f * i) + angle)) * 10, 0};
+		worldTransform_[i].UpdateMatrix();
+	}
 }
 
 void GameScene::Draw() {
@@ -67,12 +73,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	for (int i = 0; i < 9; i++) {
-		for (int j = 0; j < 9; j++) {
-			for (int k = 0; k < 9; k++) {
-				model_->Draw(worldTransform_[i][j][k], viewProjection_, textureHandle_);
-			}
-		}
+	for (int i = 0; i < 10; i++) {
+		model_->Draw(worldTransform_[i], viewProjection_, textureHandle_);
 	}
 
 	// 3Dオブジェクト描画後処理
